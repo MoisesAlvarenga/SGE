@@ -11,12 +11,16 @@ namespace SGE.Service
         private readonly IRepository<Aluno> _repo;
         private readonly IMapper _mapper;
         private readonly IAvaliacaoService _avaliacaoService;
+        private readonly ITurmaService _turmaService;
+        private readonly ICursoService _cursoService;
 
-        public AlunoService(IRepository<Aluno> repo, IMapper mapper, IAvaliacaoService avaliacaoService)
+        public AlunoService(IRepository<Aluno> repo, IMapper mapper, IAvaliacaoService avaliacaoService, ITurmaService turmaService, ICursoService cursoService)
         {
             _repo = repo;
             _mapper = mapper;
             _avaliacaoService = avaliacaoService;
+            _turmaService = turmaService;
+            _cursoService = cursoService;
         }
 
         public async Task<AlunoDto> CreateAsync(CreateAlunoDto dto)
@@ -58,6 +62,21 @@ namespace SGE.Service
             var aluno = await _repo.FindByIdAsync(dto.AlunoId);
             if (aluno == null)
                 throw new KeyNotFoundException($"Aluno {dto.AlunoId} não encontrado.");
+
+            if (aluno.CursoId == null)
+                throw new InvalidOperationException($"Aluno {dto.AlunoId} não está matriculado em nenhum curso.");
+            if (aluno.TurmaId == null)
+                throw new InvalidOperationException($"Aluno {dto.AlunoId} não está matriculado em nenhuma turma.");
+
+            var turma = await _turmaService.GetByCursoIdAsync(aluno.TurmaId.Value);
+            var curso = await _cursoService.GetTurmasAsync(aluno.CursoId.Value);
+
+            if (turma == null)
+                throw new KeyNotFoundException($"Turma {aluno.TurmaId} não encontrada para o aluno {dto.AlunoId}.");
+            if (curso == null)
+                throw new KeyNotFoundException($"Curso {aluno.CursoId} não encontrado para o aluno {dto.AlunoId}.");
+
+            CreateAvaliacaoDto avaliacaoDto = _mapper.Map<CreateAvaliacaoDto>(dto);
 
             // Delega criação para o serviço de avaliação
             return await _avaliacaoService.CreateAsync(dto);

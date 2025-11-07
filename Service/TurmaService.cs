@@ -81,6 +81,7 @@ public class TurmaService : ITurmaService
             throw new KeyNotFoundException($"Aluno {alunoId} não encontrado");
 
         aluno.TurmaId = turmaId;
+        aluno.CursoId = turma.CursoId;
         await _alunoRepo.UpdateAsync(aluno);
 
         return _mapper.Map<TurmaDto>(turma);
