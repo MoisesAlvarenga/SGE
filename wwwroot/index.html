@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SGE - EduConnect (Demo)</title>
+    <style>
+        body {
+            font-family: Segoe UI, Roboto, Arial;
+            margin: 20px
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 6px
+        }
+
+        input,
+        select {
+            padding: 6px;
+            margin: 4px
+        }
+
+        button {
+            padding: 6px 10px
+        }
+
+        pre {
+            background: #f7f7f7;
+            padding: 10px
+        }
+    </style>
+</head>
+
+<body>
+    <h2>SGE - Sistema de Gestão Educacional (Demo)</h2>
+
+    <div class="card">
+        <h3>Cadastrar Curso</h3>
+        <input id="cursoNome" placeholder="Nome" />
+        <input id="cursoCodigo" placeholder="Código" />
+        <input id="cursoCarga" type="number" placeholder="Carga Horária" />
+        <select id="cursoTipo">
+            <option value="">Normal</option>
+            <option value="presencial">Presencial</option>
+            <option value="ead">EAD</option>
+        </select>
+        <input id="cursoExtra" placeholder="Sala / Plataforma" />
+        <button onclick="criarCurso()">Salvar Curso</button>
+        <div id="cursos"></div>
+    </div>
+
+    <div class="card">
+        <h3>Cadastrar Professor</h3>
+        <input id="profNome" placeholder="Nome" />
+        <input id="profEsp" placeholder="Especialidade" />
+        <input id="profReg" placeholder="Registro" />
+        <button onclick="criarProfessor()">Salvar Professor</button>
+        <div id="professores"></div>
+    </div>
+
+    <div class="card">
+        <h3>Cadastrar Aluno</h3>
+        <input id="alunoNome" placeholder="Nome" />
+        <input id="alunoMat" placeholder="Matrícula" />
+        <select id="alunoCurso"></select>
+        <button onclick="criarAluno()">Salvar Aluno</button>
+        <div id="alunos"></div>
+    </div>
+
+    <div class="card">
+        <h3>Criar Turma</h3>
+        <input id="turmaCodigo" placeholder="Código" />
+        <select id="turmaCurso"></select>
+        <select id="turmaProf"></select>
+        <button onclick="criarTurma()">Criar Turma</button>
+        <div id="turmas"></div>
+    </div>
+
+    <div class="card">
+        <h3>Registrar Avaliação</h3>
+        <select id="avaliAluno"></select>
+        <select id="avaliTurma"></select>
+        <input id="avaliNota" type="number" min="0" max="10" step="0.1" placeholder="Nota" />
+        <input id="avaliDesc" placeholder="Descrição" />
+        <button onclick="registrarAvaliacao()">Registrar</button>
+    </div>
+
+    <div class="card">
+        <h3>Relatórios</h3>
+        <button onclick="gerarRelatorios()">Gerar Relatórios</button>
+        <pre id="relatorios"></pre>
+    </div>
+
+    <!-- 👇 Aqui está a referência correta ao seu JS -->
+    <script src="app.js"></script>
+</body>
+
+</html>
